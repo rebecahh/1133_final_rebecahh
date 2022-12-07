@@ -1,0 +1,13 @@
+
+{"coord":{"lon":-122.1388,"lat":37.4673},
+"weather":[{"id":802,"main":"Clouds","description":"scattered clouds","icon":"03d"}],
+"base":"stations",
+"main":{"temp":53.26,"feels_like":52.52,"temp_min":50.18,"temp_max":56.17,"pressure":1017,"humidity":90},
+"visibility":10000,
+"wind":{"speed":8.05,"deg":150},
+"clouds":{"all":40},"dt":1670261283,
+"sys":{"type":1,"id":5310,"country":"US","sunrise":1670252900,"sunset":1670287831},
+"timezone":-28800,
+"id":0,
+"name":"Palo Alto",
+"cod":200}
