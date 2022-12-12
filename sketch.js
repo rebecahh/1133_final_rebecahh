@@ -4,11 +4,14 @@ var extractedWeatherArr = [];
 var curr_r = 0;
 var curr_g = 0;
 var curr_b = 0;
+var overcastclouds;
 
 function preload() {
   for (var i = 0; i < zipcodeArr.length; i++) {
     weatherArr[i] = loadJSON('http://api.openweathermap.org/data/2.5/weather?units=imperial&zip=' + zipcodeArr[i] + ',us&APPID=477929b9958afcadcced733e8f81ef79');
   }
+	overcastclouds = loadImage('overcastclouds.png');
+	rain = loadImage('rain.gif');
 }
 
 function setup() {
@@ -18,6 +21,7 @@ function setup() {
   textFont('Courier New');
   textStyle(BOLD);
   textSize(20);
+	imageMode(CENTER);
   // for (var i = 0; i < weatherArr.length; i++) {
   //   console.log(getData(weatherArr[i]));
   // }
@@ -94,7 +98,12 @@ function zip_animate(zip) {
   }
   textAlign(CENTER);
   text(city.temp+'°F',mouseX,mouseY);
-
+	if (city.description == 'overcast clouds'){
+		image(overcastclouds,mouseX,mouseY-55,200,200);
+		image(overcastclouds,mouseX+100,mouseY-55,150,150);
+		image(overcastclouds,mouseX-100,mouseY-55,150,150);
+		image(rain,mouseX,mouseY,250,150);
+	}
   cityheight = (height / zipcodeArr.length) * zip + 20;
   citywidth = width / 2;
   textAlign(CENTER);
