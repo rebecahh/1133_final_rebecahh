@@ -10,12 +10,18 @@ function preload() {
   for (var i = 0; i < zipcodeArr.length; i++) {
     weatherArr[i] = loadJSON('http://api.openweathermap.org/data/2.5/weather?units=imperial&zip=' + zipcodeArr[i] + ',us&APPID=477929b9958afcadcced733e8f81ef79');
   }
-	overcastclouds = loadImage('overcastclouds.png');
+	cloud = loadImage('cloud.png');
 	rain = loadImage('rain.gif');
+	mist = loadImage('mist.gif');
+	person = loadImage('person.png');
+	umbrella = loadImage('umbrella.png');
+	sunglasses = loadImage('sunglasses.png');
+	cap = loadImage('cap.png');
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+	// frameRate(10);
   background(curr_r, curr_g, curr_b);
   fill(255);
   textFont('Courier New');
@@ -28,6 +34,7 @@ function setup() {
 }
 
 function draw() {
+	noStroke();
   if (mouseX > width / 3 && mouseX < width / 3 * 2) {
     if (mouseY < (height / zipcodeArr.length)) {
       zip_animate(0);
@@ -72,7 +79,7 @@ function start() {
 function zip_animate(zip) {
   noCursor();
   city = getData(weatherArr[zip]);
-  console.log(city.temp);
+  // console.log(city.temp);
   background(curr_r, curr_g, curr_b);
   if (city.temp < 30) {
     bgChange(140, 174, 212);
@@ -97,12 +104,23 @@ function zip_animate(zip) {
     bgChange(196, 161, 161);
   }
   textAlign(CENTER);
-  text(city.temp+'°F',mouseX,mouseY);
+	if (city.description == 'rain' || city.description == 'light rain'){
+		rain_animate();
+	}
 	if (city.description == 'overcast clouds'){
-		image(overcastclouds,mouseX,mouseY-55,200,200);
-		image(overcastclouds,mouseX+100,mouseY-55,150,150);
-		image(overcastclouds,mouseX-100,mouseY-55,150,150);
-		image(rain,mouseX,mouseY,250,150);
+		overcastclouds_animate();
+	}
+	if (city.description == 'mist'){
+		mist_animate();
+	}
+	if (city.description == 'clear sky'){
+		clearsky_animate();
+	}
+	if (city.description == 'few clouds' || city.description == 'scattered clouds'){
+		fewscatteredclouds_animate();
+	}
+	if (city.description == 'broken clouds'){
+		brokenclouds_animate();
 	}
   cityheight = (height / zipcodeArr.length) * zip + 20;
   citywidth = width / 2;
@@ -112,6 +130,58 @@ function zip_animate(zip) {
   text(city.name, citywidth - 100, cityheight);
   textAlign(LEFT);
   text(city.description, citywidth + 100, cityheight);
+	text(city.temp+'°F',mouseX,mouseY);
+	// image(person,width/3,height/2,150,150);
+}
+
+// var prevTime = 0;
+function overcastclouds_animate(){
+	// console.log(prevTime,millis());
+	// if (millis() > prevTime + 1500){
+		// opacity = 0;
+		// ellipse(mouseX,mouseY,150,150);
+	for (var i=0;i<width;i+=150){
+		for (var j=0;j<height/3;j+=80){
+			image(cloud,i,j,random(200,250),random(250,300));
+		}
+	}
+		// prevTime = millis();
+	// }
+	image(person,width/3,height/2,150,150);
+}
+function clearsky_animate(){
+	image(person,width/3,height/2,150,150);
+	image(sunglasses,width/3,height/2-40,50,30);
+}
+function mist_animate(){
+	image(mist,width/2,height/2,width,height);
+	image(person,width/3,height/2,150,150);
+	image(cap,width/3,height/2-50,50,50);
+}
+function fewscatteredclouds_animate(){
+	for (var i=0;i<width;i+=170){
+		for (var j=0;j<height/3;j+=140){
+			image(cloud,i,j,random(200,250),random(250,300));
+		}
+	}
+	image(person,width/3,height/2,150,150);
+}
+function brokenclouds_animate(){
+	for (var i=0;i<width;i+=200){
+		for (var j=0;j<height/3;j+=215){
+			image(cloud,i,j,random(200,250),random(250,300));
+		}
+	}
+	image(person,width/3,height/2,150,150);
+	image(sunglasses,width/3,height/2-40,50,30);
+}
+function rain_animate(){
+	image(cloud,mouseX,mouseY-55,200,200);
+	image(cloud,mouseX+100,mouseY-55,150,150);
+	image(cloud,mouseX-100,mouseY-55,150,150);
+	image(rain,width/2,height/2,width,height);
+	image(umbrella,width/3+10,height/2-50,120,120);
+	image(person,width/3,height/2,150,150);
 }
 
 function bgChange(r, g, b) {
