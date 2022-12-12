@@ -1,4 +1,4 @@
-var zipcodeArr = [10001, 94102, 98101, 77084, 60629, 90011, 85001, 80202, 30303, 19019];
+var zipcodeArr = [10001, 94102, 98101, 78205, 60629, 90011, 80202, 30303, 19019];
 var weatherArr = [];
 var extractedWeatherArr = [];
 var curr_r = 0;
@@ -12,11 +12,24 @@ function preload() {
   }
 	cloud = loadImage('cloud.png');
 	rain = loadImage('rain.gif');
+	lightraight = loadImage('lightrain.gif');
 	mist = loadImage('mist.gif');
 	person = loadImage('person.png');
 	umbrella = loadImage('umbrella.png');
 	sunglasses = loadImage('sunglasses.png');
 	cap = loadImage('cap.png');
+	mask = loadImage('mask.png');
+	platform = loadImage('platform.jpeg');
+	grass = loadImage('grass.png');
+	nyc = loadImage('nyc.png');
+	sf = loadImage('sf.png');
+	seattle = loadImage('seattle.png');
+	sanantonio = loadImage('sanantonio.png');
+	chicago = loadImage('chicago.png');
+	la = loadImage('la.png');
+	denver = loadImage('denver.png');
+	atl = loadImage('atl.png');
+	phl = loadImage('phl.png');
 }
 
 function setup() {
@@ -38,29 +51,39 @@ function draw() {
   if (mouseX > width / 3 && mouseX < width / 3 * 2) {
     if (mouseY < (height / zipcodeArr.length)) {
       zip_animate(0);
+			image(nyc,2*width/3,height/2,120,150);
     } else if (mouseY < (height / zipcodeArr.length) * 2) {
       zip_animate(1);
+			image(sf,2*width/3,height/2,150,150);
     } else if (mouseY < (height / zipcodeArr.length) * 3) {
       zip_animate(2);
+			image(seattle,2*width/3,height/2,80,150);
     } else if (mouseY < (height / zipcodeArr.length) * 4) {
       zip_animate(3);
+			image(sanantonio,2*width/3,height/2,180,200);
     } else if (mouseY < (height / zipcodeArr.length) * 5) {
-      zip_animate(4);
+			zip_animate(4);
+			image(chicago,2*width/3,height/2,150,150);
     } else if (mouseY < (height / zipcodeArr.length) * 6) {
-      zip_animate(5);
+			zip_animate(5);
+			image(la,2*width/3,height/2-30,200,100);
     } else if (mouseY < (height / zipcodeArr.length) * 7) {
       zip_animate(6);
+			image(denver,2*width/3,height/2,180,150);
     } else if (mouseY < (height / zipcodeArr.length) * 8) {
       zip_animate(7);
+			image(atl,2*width/3,height/2,180,150);
     } else if (mouseY < (height / zipcodeArr.length) * 9) {
       zip_animate(8);
-    } else if (mouseY < (height / zipcodeArr.length) * 10) {
-      zip_animate(9);
-    } else if (mouseY < (height / zipcodeArr.length) * 11) {
-      zip_animate(10);
-    } else if (mouseY < (height / zipcodeArr.length) * 12) {
-      zip_animate(11);
-    }
+			image(phl,2*width/3,height/2,180,150);
+		}
+    // } else if (mouseY < (height / zipcodeArr.length) * 10) {
+    //   zip_animate(9);
+    // } else if (mouseY < (height / zipcodeArr.length) * 11) {
+    //   zip_animate(10);
+    // } else if (mouseY < (height / zipcodeArr.length) * 12) {
+    //   zip_animate(11);
+    // }
   } else {
     background(0);
     start();
@@ -104,7 +127,10 @@ function zip_animate(zip) {
     bgChange(196, 161, 161);
   }
   textAlign(CENTER);
-	if (city.description == 'rain' || city.description == 'light rain'){
+	if (city.description == 'light rain'){
+		lightrain_animate();
+	}
+	if (city.description == 'moderate rain'){
 		rain_animate();
 	}
 	else if (city.description == 'overcast clouds'){
@@ -112,6 +138,9 @@ function zip_animate(zip) {
 	}
 	else if (city.description == 'mist'){
 		mist_animate();
+	}
+	else if (city.description == 'smoke'){
+		smoke_animate();
 	}
 	else if (city.description == 'clear sky'){
 		clearsky_animate();
@@ -139,27 +168,31 @@ function zip_animate(zip) {
 
 // var prevTime = 0;
 function overcastclouds_animate(){
-	// console.log(prevTime,millis());
-	// if (millis() > prevTime + 1500){
-		// opacity = 0;
-		// ellipse(mouseX,mouseY,150,150);
 	for (var i=0;i<width;i+=150){
 		for (var j=0;j<height/3;j+=80){
 			image(cloud,i,j,random(200,250),random(250,300));
 		}
 	}
-		// prevTime = millis();
-	// }
+	image(platform,width/3+2,height/2+55,150,75);
 	image(person,width/3,height/2,150,150);
+	
 }
 function clearsky_animate(){
+	image(grass,width/3+2,height/2+55,150,75);
 	image(person,width/3,height/2,150,150);
 	image(sunglasses,width/3,height/2-40,50,30);
 }
 function mist_animate(){
 	image(mist,width/2,height/2,width,height);
+	image(platform,width/3+2,height/2+55,150,75);
 	image(person,width/3,height/2,150,150);
 	image(cap,width/3,height/2-50,50,50);
+}
+function smoke_animate(){
+	image(mist,width/2,height/2,width,height);
+	image(platform,width/3+2,height/2+55,150,75);
+	image(person,width/3,height/2,150,150);
+	image(mask,width/3,height/2-30,60,20);
 }
 function fewscatteredclouds_animate(){
 	for (var i=0;i<width;i+=170){
@@ -167,6 +200,7 @@ function fewscatteredclouds_animate(){
 			image(cloud,i,j,random(200,250),random(250,300));
 		}
 	}
+	image(grass,width/3+2,height/2+55,150,75);
 	image(person,width/3,height/2,150,150);
 }
 function brokenclouds_animate(){
@@ -175,6 +209,7 @@ function brokenclouds_animate(){
 			image(cloud,i,j,random(200,250),random(250,300));
 		}
 	}
+	image(grass,width/3+2,height/2+55,150,75);
 	image(person,width/3,height/2,150,150);
 	image(sunglasses,width/3,height/2-40,50,30);
 }
@@ -186,7 +221,14 @@ function rain_animate(){
 	image(umbrella,width/3+10,height/2-50,120,120);
 	image(person,width/3,height/2,150,150);
 }
-
+function lightrain_animate(){
+	image(cloud,mouseX,mouseY-55,200,200);
+	image(cloud,mouseX+100,mouseY-55,150,150);
+	image(cloud,mouseX-100,mouseY-55,150,150);
+	image(lightrain,width/2,height/2,width,height);
+	image(umbrella,width/3+10,height/2-50,120,120);
+	image(person,width/3,height/2,150,150);
+}
 function bgChange(r, g, b) {
   if (curr_r < r) {
     // curr_r += 5;
