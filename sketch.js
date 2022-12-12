@@ -107,20 +107,23 @@ function zip_animate(zip) {
 	if (city.description == 'rain' || city.description == 'light rain'){
 		rain_animate();
 	}
-	if (city.description == 'overcast clouds'){
+	else if (city.description == 'overcast clouds'){
 		overcastclouds_animate();
 	}
-	if (city.description == 'mist'){
+	else if (city.description == 'mist'){
 		mist_animate();
 	}
-	if (city.description == 'clear sky'){
+	else if (city.description == 'clear sky'){
 		clearsky_animate();
 	}
-	if (city.description == 'few clouds' || city.description == 'scattered clouds'){
+	else if (city.description == 'few clouds' || city.description == 'scattered clouds'){
 		fewscatteredclouds_animate();
 	}
-	if (city.description == 'broken clouds'){
+	else if (city.description == 'broken clouds'){
 		brokenclouds_animate();
+	}
+	else{
+		image(person,width/3,height/2,150,150);
 	}
   cityheight = (height / zipcodeArr.length) * zip + 20;
   citywidth = width / 2;
