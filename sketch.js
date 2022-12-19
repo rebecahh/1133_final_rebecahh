@@ -1,3 +1,5 @@
+// landmark images are uploaded for the following cities in order 
+// but any city can be chosen by modifying the zip codes in the zipcodeArr array
 var zipcodeArr = [10001, 94102, 98101, 78205, 60629, 90011, 80202, 30303, 19019];
 var weatherArr = [];
 var extractedWeatherArr = [];
@@ -5,14 +7,20 @@ var curr_r = 0;
 var curr_g = 0;
 var curr_b = 0;
 var overcastclouds;
+var thresholdsArr = [];
+var threshnum;
+var imagesArr = [];
 
 function preload() {
   for (var i = 0; i < zipcodeArr.length; i++) {
     weatherArr[i] = loadJSON('http://api.openweathermap.org/data/2.5/weather?units=imperial&zip=' + zipcodeArr[i] + ',us&APPID=477929b9958afcadcced733e8f81ef79');
+		newImg = loadImage(i+'.png');
+		imagesArr[i] = newImg;
   }
+	font = loadFont('Rubik-Regular.ttf');
 	cloud = loadImage('cloud.png');
 	rain = loadImage('rain.gif');
-	lightraight = loadImage('lightrain.gif');
+	lightrain = loadImage('lightrain.gif');
 	mist = loadImage('mist.gif');
 	person = loadImage('person.png');
 	umbrella = loadImage('umbrella.png');
@@ -21,62 +29,124 @@ function preload() {
 	mask = loadImage('mask.png');
 	platform = loadImage('platform.jpeg');
 	grass = loadImage('grass.png');
-	nyc = loadImage('nyc.png');
-	sf = loadImage('sf.png');
-	seattle = loadImage('seattle.png');
-	sanantonio = loadImage('sanantonio.png');
-	chicago = loadImage('chicago.png');
-	la = loadImage('la.png');
-	denver = loadImage('denver.png');
-	atl = loadImage('atl.png');
-	phl = loadImage('phl.png');
+	// nyc = loadImage('nyc.png');
+	// sf = loadImage('sf.png');
+	// seattle = loadImage('seattle.png');
+	// sanantonio = loadImage('sanantonio.png');
+	// chicago = loadImage('chicago.png');
+	// la = loadImage('la.png');
+	// denver = loadImage('denver.png');
+	// atl = loadImage('atl.png');
+	// phl = loadImage('phl.png');
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-	// frameRate(10);
   background(curr_r, curr_g, curr_b);
   fill(255);
   textFont('Courier New');
+	// textFont(font);
   textStyle(BOLD);
   textSize(20);
 	imageMode(CENTER);
   // for (var i = 0; i < weatherArr.length; i++) {
   //   console.log(getData(weatherArr[i]));
   // }
+	for (var i=1;i<=zipcodeArr.length;i++){
+		threshnum = height / zipcodeArr.length * i;
+		thresholdsArr[i-1] = threshnum;
+	}
 }
+
+// function draw() {
+// 	noStroke();
+// 	if (millis()<1500){
+// 		background(0);
+// 		start();
+// 	}
+//   else if (mouseX > width / 3 && mouseX < width / 3 * 2) {
+//     if (mouseY < (height / zipcodeArr.length)) {
+//       zip_animate(0);
+// 			image(nyc,2*width/3,height/2,120,150);
+//     } else if (mouseY < (height / zipcodeArr.length) * 2) {
+//       zip_animate(1);
+// 			image(sf,2*width/3,height/2,150,150);
+//     } else if (mouseY < (height / zipcodeArr.length) * 3) {
+//       zip_animate(2);
+// 			image(seattle,2*width/3,height/2,80,150);
+//     } else if (mouseY < (height / zipcodeArr.length) * 4) {
+//       zip_animate(3);
+// 			image(sanantonio,2*width/3,height/2,180,200);
+//     } else if (mouseY < (height / zipcodeArr.length) * 5) {
+// 			zip_animate(4);
+// 			image(chicago,2*width/3,height/2,150,150);
+//     } else if (mouseY < (height / zipcodeArr.length) * 6) {
+// 			zip_animate(5);
+// 			image(la,2*width/3,height/2-30,200,100);
+//     } else if (mouseY < (height / zipcodeArr.length) * 7) {
+//       zip_animate(6);
+// 			image(denver,2*width/3,height/2,180,150);
+//     } else if (mouseY < (height / zipcodeArr.length) * 8) {
+//       zip_animate(7);
+// 			image(atl,2*width/3,height/2,180,150);
+//     } else if (mouseY < (height / zipcodeArr.length) * 9) {
+//       zip_animate(8);
+// 			image(phl,2*width/3,height/2,180,150);
+// 		}
+//     // } else if (mouseY < (height / zipcodeArr.length) * 10) {
+//     //   zip_animate(9);
+//     // } else if (mouseY < (height / zipcodeArr.length) * 11) {
+//     //   zip_animate(10);
+//     // } else if (mouseY < (height / zipcodeArr.length) * 12) {
+//     //   zip_animate(11);
+//     // }
+//   } 
+// 	else {
+//     background(0);
+//     start();
+//   }
+// }
 
 function draw() {
 	noStroke();
-  if (mouseX > width / 3 && mouseX < width / 3 * 2) {
-    if (mouseY < (height / zipcodeArr.length)) {
-      zip_animate(0);
-			image(nyc,2*width/3,height/2,120,150);
-    } else if (mouseY < (height / zipcodeArr.length) * 2) {
-      zip_animate(1);
-			image(sf,2*width/3,height/2,150,150);
-    } else if (mouseY < (height / zipcodeArr.length) * 3) {
-      zip_animate(2);
-			image(seattle,2*width/3,height/2,80,150);
-    } else if (mouseY < (height / zipcodeArr.length) * 4) {
-      zip_animate(3);
-			image(sanantonio,2*width/3,height/2,180,200);
-    } else if (mouseY < (height / zipcodeArr.length) * 5) {
-			zip_animate(4);
-			image(chicago,2*width/3,height/2,150,150);
-    } else if (mouseY < (height / zipcodeArr.length) * 6) {
-			zip_animate(5);
-			image(la,2*width/3,height/2-30,200,100);
-    } else if (mouseY < (height / zipcodeArr.length) * 7) {
-      zip_animate(6);
-			image(denver,2*width/3,height/2,180,150);
-    } else if (mouseY < (height / zipcodeArr.length) * 8) {
-      zip_animate(7);
-			image(atl,2*width/3,height/2,180,150);
-    } else if (mouseY < (height / zipcodeArr.length) * 9) {
-      zip_animate(8);
-			image(phl,2*width/3,height/2,180,150);
-		}
+	
+	// console.log(thresholdsArr);
+	currcity = curr_city();
+	if (millis()<1500){
+		background(0);
+		start();
+	}
+  else if (mouseX > width / 3 && mouseX < width / 3 * 2) {
+		zip_animate(currcity);
+		image(imagesArr[currcity],2*width/3,height/2,150,150);
+		// if (mouseY < (height / zipcodeArr.length)) {
+		// zip_animate(0);
+		// 	image(nyc,2*width/3,height/2,120,150);
+		// } else if (mouseY < (height / zipcodeArr.length) * 2) {
+		// zip_animate(1);
+		// 	image(sf,2*width/3,height/2,150,150);
+		// } else if (mouseY < (height / zipcodeArr.length) * 3) {
+		// zip_animate(2);
+		// 	image(seattle,2*width/3,height/2,80,150);
+		// } else if (mouseY < (height / zipcodeArr.length) * 4) {
+		// zip_animate(3);
+		// 	image(sanantonio,2*width/3,height/2,180,200);
+		// } else if (mouseY < (height / zipcodeArr.length) * 5) {
+		// 	zip_animate(4);
+		// 	image(chicago,2*width/3,height/2,150,150);
+		// } else if (mouseY < (height / zipcodeArr.length) * 6) {
+		// 	zip_animate(5);
+		// 	image(la,2*width/3,height/2-30,200,100);
+		// } else if (mouseY < (height / zipcodeArr.length) * 7) {
+		// zip_animate(6);
+		// 	image(denver,2*width/3,height/2,180,150);
+		// } else if (mouseY < (height / zipcodeArr.length) * 8) {
+		// zip_animate(7);
+		// 	image(atl,2*width/3,height/2,180,150);
+		// } else if (mouseY < (height / zipcodeArr.length) * 9) {
+		// zip_animate(8);
+		// 	image(phl,2*width/3,height/2,180,150);
+		// }
     // } else if (mouseY < (height / zipcodeArr.length) * 10) {
     //   zip_animate(9);
     // } else if (mouseY < (height / zipcodeArr.length) * 11) {
@@ -84,26 +154,46 @@ function draw() {
     // } else if (mouseY < (height / zipcodeArr.length) * 12) {
     //   zip_animate(11);
     // }
-  } else {
+  } 
+	else if (mouseX < width / 3 || mouseX > 2* width /3){
+		background(0);
+		start();
+		cityheight = (height / zipcodeArr.length) * currcity + 20;
+		textAlign(CENTER);
+		fill(random(255));
+		text(getData(weatherArr[currcity]).name,mouseX,mouseY);
+	}
+	else {
     background(0);
     start();
   }
-
 }
+
 
 function start() {
   cursor();
+	fill(255,255,255);
   for (var i = 0; i < zipcodeArr.length; i++) {
     textAlign(CENTER);
     text(zipcodeArr[i], width/2,(height / zipcodeArr.length) * i + 20);
   }
 }
 
+function curr_city(){
+	for (var i=0;i<thresholdsArr.length;i++){
+		if (mouseY <= thresholdsArr[i]){
+			return i;
+		}
+	}
+}
+
 function zip_animate(zip) {
   noCursor();
+	fill(255,255,255);
   city = getData(weatherArr[zip]);
   // console.log(city.temp);
   background(curr_r, curr_g, curr_b);
+// 	temperature influences background color. degrees are shown on cursor
   if (city.temp < 30) {
     bgChange(140, 174, 212);
   } else if (city.temp < 40) {
@@ -126,23 +216,10 @@ function zip_animate(zip) {
   else if (city.temp < 90) {
     bgChange(196, 161, 161);
   }
+// 	weather conditions influence animation and person's accessories
+// 	listend here in order of severity
   textAlign(CENTER);
-	if (city.description == 'light rain'){
-		lightrain_animate();
-	}
-	if (city.description == 'moderate rain'){
-		rain_animate();
-	}
-	else if (city.description == 'overcast clouds'){
-		overcastclouds_animate();
-	}
-	else if (city.description == 'mist'){
-		mist_animate();
-	}
-	else if (city.description == 'smoke'){
-		smoke_animate();
-	}
-	else if (city.description == 'clear sky'){
+	if (city.description == 'clear sky'){
 		clearsky_animate();
 	}
 	else if (city.description == 'few clouds' || city.description == 'scattered clouds'){
@@ -151,6 +228,28 @@ function zip_animate(zip) {
 	else if (city.description == 'broken clouds'){
 		brokenclouds_animate();
 	}
+	else if (city.description == 'light rain' || city.description == 'drizzle' || city.description == 'drizzle rain'){
+		lightrain_animate();
+	}
+	else if (city.description == 'moderate rain' || city.description == 'shower rain' || city.description == 'rain'){
+		rain_animate();
+	}
+	else if (city.description == 'overcast clouds'){
+		overcastclouds_animate();
+	}
+	else if (city.description == 'mist'){
+		mist_animate();
+	}
+	else if (city.description == 'thunderstorm'){
+		// THUNDERSTORM FUNCTION
+	}
+	else if (city.description == 'snow'){
+		// SNOW FUNCTION
+	}
+	else if (city.description == 'smoke'){
+		smoke_animate();
+	}
+	
 	else{
 		image(person,width/3,height/2,150,150);
 	}
@@ -163,10 +262,9 @@ function zip_animate(zip) {
   textAlign(LEFT);
   text(city.description, citywidth + 100, cityheight);
 	text(city.temp+'°F',mouseX,mouseY);
-	// image(person,width/3,height/2,150,150);
 }
 
-// var prevTime = 0;
+// weather description animationns
 function overcastclouds_animate(){
 	for (var i=0;i<width;i+=150){
 		for (var j=0;j<height/3;j+=80){
@@ -229,6 +327,7 @@ function lightrain_animate(){
 	image(umbrella,width/3+10,height/2-50,120,120);
 	image(person,width/3,height/2,150,150);
 }
+// background color gradually changes in accordance with city temperature
 function bgChange(r, g, b) {
   if (curr_r < r) {
     // curr_r += 5;
@@ -256,15 +355,7 @@ function bgChange(r, g, b) {
   }
 }
 
-// function bgChangeBack() {
-  // curr_r -=5;
-  // curr_g -=5;
-  // curr_b -=5;
-  // curr_r --;
-  // curr_g --;
-  // curr_b --;
-// }
-
+// API data
 function getData(weatherData) {
   main = weatherData.main;
   name = weatherData.name;
