@@ -1,6 +1,7 @@
 // landmark images are uploaded for the following cities in order 
 // but any city can be chosen by modifying the zip codes in the zipcodeArr array
-var zipcodeArr = [10001, 94102, 98101, 78205, 60629, 90011, 80202, 30303, 19019];
+// var zipcodeArr = [10001, 94102, 98101, 78205, 60629, 90011, 80202, 30303, 19019];
+var zipcodeArr = [10001, 94102, 98101, 78205, 60629, 90011];
 var weatherArr = [];
 var extractedWeatherArr = [];
 var curr_r = 0;
